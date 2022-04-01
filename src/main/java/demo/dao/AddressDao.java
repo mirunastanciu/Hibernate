@@ -15,6 +15,19 @@ public class AddressDao {
 		session.save(address);
 		session.getTransaction().commit();
 		
+		session.evict(address);
+		
+	}
+	
+	public AddressEntity getLatestAddress() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select a from ").append(AddressEntity.class.getName()).append(" a order by a.id desc");
+		
+		AddressEntity result = (AddressEntity) session.createQuery(sb.toString()).setMaxResults(1).uniqueResult();
+		
+		return result;
+		
 	}
 
 }

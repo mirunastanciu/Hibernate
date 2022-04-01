@@ -14,6 +14,18 @@ public class ManagerDao {
 		session.save(manager);
 		
 		session.getTransaction().commit();
+		
+		session.evict(manager);
+	}
+	
+	public ManagerEntity getLatestManager() {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select m from ").append(ManagerEntity.class.getName()).append(" m order by m.id desc");
+		
+		ManagerEntity result = (ManagerEntity) session.createQuery(sb.toString()).setMaxResults(1).uniqueResult();
+		
+		return result;
 	}
 
 }
